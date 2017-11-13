@@ -37,8 +37,6 @@ const ResetButton = inject('calculator')(({ calculator }) => (
 
 export default class Application extends Component {
   render() {
-    const { calculator } = this.props;
-
     return (
       <div className="Application">
         <Title />
