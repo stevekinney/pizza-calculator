@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { observer } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 
 import Title from './Title';
 import Input from './Input';
 import Result from './Result';
 
+@inject('calculator')
 @observer
 export default class Application extends Component {
   render() {
