@@ -12,6 +12,16 @@ export default class PizzaCalculator {
   }
 
   @action.bound
+  updateNumberOfPeople(event) {
+    this.numberOfPeople = parseInt(event.target.value, 10);
+  }
+
+  @action.bound
+  updateSlicesPerPerson(event) {
+    this.slicesPerPerson = parseInt(event.target.value, 10);
+  }
+
+  @action.bound
   reset() {
     this.numberOfPeople = 10;
     this.slicesPerPerson = 2;
