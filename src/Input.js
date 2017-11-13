@@ -1,25 +1,16 @@
 import React from 'react';
 
-const styles = {
-  label: {
-    display: 'block',
-    margin: '10px',
-  },
-  input: {
-    marginLeft: '10px',
-  },
-};
-
-const Input = ({ label, value, type, onChange }) => {
+const Input = ({ label, value, max, min, type, onChange }) => {
   return (
-    <label style={styles.label}>
+    <label>
       {label}
       <input
         value={value}
         type={type}
+        max={max}
+        min={min}
         placeholder={label}
         onChange={onChange}
-        style={styles.input}
       />
     </label>
   );
