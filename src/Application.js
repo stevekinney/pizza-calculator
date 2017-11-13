@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
+import { observer } from 'mobx-react';
 
 import Title from './Title';
 import Input from './Input';
 import Result from './Result';
 
-import calculatePizzasNeeded from './lib/calculate-pizzas-needed';
-
-const initialState = {
-  numberOfPeople: 10,
-  slicesPerPerson: 2,
-};
-
+@observer
 export default class Application extends Component {
   render() {
     const { calculator } = this.props;
@@ -30,11 +25,11 @@ export default class Application extends Component {
           label="Slices Per Person"
           type="number"
           min={0}
-          value={calculator.numberOfPeople}
+          value={calculator.slicesPerPerson}
           onChange={event =>
-            (calculator.numberOfPeople = parseInt(event.target.value, 10))}
+            (calculator.slicesPerPerson = parseInt(event.target.value, 10))}
         />
-        <Result amount={calculator.numberOfPizzas} />
+        <Result amount={calculator.numberOfPizzasNeeded} />
         <button className="full-width" onClick={calculator.reset}>
           Reset
         </button>
