@@ -12,28 +12,8 @@ const initialState = {
 };
 
 export default class Application extends Component {
-  state = { ...initialState };
-
-  updateNumberOfPeople = event => {
-    const numberOfPeople = parseInt(event.target.value, 10);
-    this.setState({ numberOfPeople });
-  };
-
-  updateSlicesPerPerson = event => {
-    const slicesPerPerson = parseInt(event.target.value, 10);
-    this.setState({ slicesPerPerson });
-  };
-
-  reset = event => {
-    this.setState({ ...initialState });
-  };
-
   render() {
-    const { numberOfPeople, slicesPerPerson } = this.state;
-    const numberOfPizzas = calculatePizzasNeeded(
-      numberOfPeople,
-      slicesPerPerson,
-    );
+    const { calculator } = this.props;
 
     return (
       <div className="Application">
@@ -42,18 +22,20 @@ export default class Application extends Component {
           label="Number of Guests"
           type="number"
           min={0}
-          value={numberOfPeople}
-          onChange={this.updateNumberOfPeople}
+          value={calculator.numberOfPeople}
+          onChange={event =>
+            (calculator.numberOfPeople = parseInt(event.target.value, 10))}
         />
         <Input
           label="Slices Per Person"
           type="number"
           min={0}
-          value={slicesPerPerson}
-          onChange={this.updateSlicesPerPerson}
+          value={calculator.numberOfPeople}
+          onChange={event =>
+            (calculator.numberOfPeople = parseInt(event.target.value, 10))}
         />
-        <Result amount={numberOfPizzas} />
-        <button className="full-width" onClick={this.reset}>
+        <Result amount={calculator.numberOfPizzas} />
+        <button className="full-width" onClick={calculator.reset}>
           Reset
         </button>
       </div>
