@@ -5,8 +5,36 @@ import Title from './Title';
 import Input from './Input';
 import Result from './Result';
 
-@inject('calculator')
-@observer
+const NumberOfPeopleInput = inject('calculator')(
+  observer(({ calculator }) => (
+    <Input
+      label="Number of Guests"
+      type="number"
+      min={0}
+      value={calculator.numberOfPeople}
+      onChange={calculator.updateNumberOfPeople}
+    />
+  )),
+);
+
+const SlicesPerPersonInput = inject('calculator')(
+  observer(({ calculator }) => (
+    <Input
+      label="Slices Per Person"
+      type="number"
+      min={0}
+      value={calculator.slicesPerPerson}
+      onChange={calculator.updateSlicesPerPerson}
+    />
+  )),
+);
+
+const ResetButton = inject('calculator')(({ calculator }) => (
+  <button className="full-width" onClick={calculator.reset}>
+    Reset
+  </button>
+));
+
 export default class Application extends Component {
   render() {
     const { calculator } = this.props;
@@ -14,24 +42,10 @@ export default class Application extends Component {
     return (
       <div className="Application">
         <Title />
-        <Input
-          label="Number of Guests"
-          type="number"
-          min={0}
-          value={calculator.numberOfPeople}
-          onChange={calculator.updateNumberOfPeople}
-        />
-        <Input
-          label="Slices Per Person"
-          type="number"
-          min={0}
-          value={calculator.slicesPerPerson}
-          onChange={calculator.updateSlicesPerPerson}
-        />
-        <Result amount={calculator.numberOfPizzasNeeded} />
-        <button className="full-width" onClick={calculator.reset}>
-          Reset
-        </button>
+        <NumberOfPeopleInput />
+        <SlicesPerPersonInput />
+        <Result />
+        <ResetButton />
       </div>
     );
   }
