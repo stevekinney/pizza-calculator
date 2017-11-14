@@ -1,6 +1,11 @@
 import React from 'react';
 
 const Input = ({ label, value, max, min, type, onChange }) => {
+  const handleChange = event => {
+    const value = parseInt(event.target.value, 10);
+    onChange(value);
+  };
+
   return (
     <label>
       {label}
@@ -10,7 +15,7 @@ const Input = ({ label, value, max, min, type, onChange }) => {
         max={max}
         min={min}
         placeholder={label}
-        onChange={onChange}
+        onChange={handleChange}
       />
     </label>
   );

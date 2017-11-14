@@ -12,8 +12,7 @@ const mapStateToProps = ({ numberOfPeople }) => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    onChange(event) {
-      const value = parseInt(event.target.value, 10);
+    onChange(value) {
       dispatch(updateNumberOfPeople(value));
     },
   };
