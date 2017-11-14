@@ -12,44 +12,45 @@ const initialState = {
 };
 
 const WithCalculator = WrappedComponent => {
-  return WrappedComponent;
+  return class extends Component {
+    static displayName = `WithCalculator(${WrappedComponent.displayName ||
+      WrappedComponent.name})`;
+
+    state = { ...initialState };
+
+    updateNumberOfPeople = event => {
+      const numberOfPeople = parseInt(event.target.value, 10);
+      this.setState({ numberOfPeople });
+    };
+
+    updateSlicesPerPerson = event => {
+      const slicesPerPerson = parseInt(event.target.value, 10);
+      this.setState({ slicesPerPerson });
+    };
+
+    reset = event => {
+      this.setState({ ...initialState });
+    };
+
+    render() {
+      const { numberOfPeople, slicesPerPerson } = this.state;
+      const numberOfPizzas = calculatePizzasNeeded(
+        numberOfPeople,
+        slicesPerPerson,
+      );
+
+      return (
+        <WrappedComponent
+          numberOfPeople={numberOfPeople}
+          slicesPerPerson={slicesPerPerson}
+          numberOfPizzas={numberOfPizzas}
+          updateNumberOfPeople={this.updateNumberOfPeople}
+          updateSlicesPerPerson={this.updateSlicesPerPerson}
+        />
+      );
+    }
+  };
 };
-
-export default class ApplicationContainer extends Component {
-  state = { ...initialState };
-
-  updateNumberOfPeople = event => {
-    const numberOfPeople = parseInt(event.target.value, 10);
-    this.setState({ numberOfPeople });
-  };
-
-  updateSlicesPerPerson = event => {
-    const slicesPerPerson = parseInt(event.target.value, 10);
-    this.setState({ slicesPerPerson });
-  };
-
-  reset = event => {
-    this.setState({ ...initialState });
-  };
-
-  render() {
-    const { numberOfPeople, slicesPerPerson } = this.state;
-    const numberOfPizzas = calculatePizzasNeeded(
-      numberOfPeople,
-      slicesPerPerson,
-    );
-
-    return (
-      <Application
-        numberOfPeople={numberOfPeople}
-        slicesPerPerson={slicesPerPerson}
-        numberOfPizzas={numberOfPizzas}
-        updateNumberOfPeople={this.updateNumberOfPeople}
-        updateSlicesPerPerson={this.updateSlicesPerPerson}
-      />
-    );
-  }
-}
 
 class Application extends Component {
   render() {
@@ -85,3 +86,5 @@ class Application extends Component {
     );
   }
 }
+
+export default WithCalculator(Application);
