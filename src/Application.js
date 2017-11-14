@@ -11,6 +11,10 @@ const initialState = {
   slicesPerPerson: 2,
 };
 
+const WithCalculator = WrappedComponent => {
+  return WrappedComponent;
+};
+
 export default class ApplicationContainer extends Component {
   state = { ...initialState };
 
