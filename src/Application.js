@@ -11,7 +11,7 @@ const initialState = {
   slicesPerPerson: 2,
 };
 
-export default class Application extends Component {
+export default class ApplicationContainer extends Component {
   state = { ...initialState };
 
   updateNumberOfPeople = event => {
@@ -36,6 +36,27 @@ export default class Application extends Component {
     );
 
     return (
+      <Application
+        numberOfPeople={numberOfPeople}
+        slicesPerPerson={slicesPerPerson}
+        numberOfPizzas={numberOfPizzas}
+        updateNumberOfPeople={this.updateNumberOfPeople}
+        updateSlicesPerPerson={this.updateSlicesPerPerson}
+      />
+    );
+  }
+}
+
+class Application extends Component {
+  render() {
+    const {
+      numberOfPeople,
+      slicesPerPerson,
+      numberOfPizzas,
+      updateNumberOfPeople,
+      updateSlicesPerPerson,
+    } = this.props;
+    return (
       <div className="Application">
         <Title />
         <Input
@@ -43,14 +64,14 @@ export default class Application extends Component {
           type="number"
           min={0}
           value={numberOfPeople}
-          onChange={this.updateNumberOfPeople}
+          onChange={updateNumberOfPeople}
         />
         <Input
           label="Slices Per Person"
           type="number"
           min={0}
           value={slicesPerPerson}
-          onChange={this.updateSlicesPerPerson}
+          onChange={updateSlicesPerPerson}
         />
         <Result amount={numberOfPizzas} />
         <button className="full-width" onClick={this.reset}>
