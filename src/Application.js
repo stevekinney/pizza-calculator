@@ -11,7 +11,7 @@ const initialState = {
   slicesPerPerson: 2,
 };
 
-export default class ApplicationContainer extends Component {
+class PizzaCalculator extends Component {
   state = { ...initialState };
 
   updateNumberOfPeople = event => {
@@ -36,48 +36,55 @@ export default class ApplicationContainer extends Component {
     );
 
     return (
-      <Application
-        numberOfPeople={numberOfPeople}
-        slicesPerPerson={slicesPerPerson}
-        numberOfPizzas={numberOfPizzas}
-        updateNumberOfPeople={this.updateNumberOfPeople}
-        updateSlicesPerPerson={this.updateSlicesPerPerson}
-      />
+      <div>
+        {this.props.render({
+          numberOfPeople,
+          slicesPerPerson,
+          numberOfPizzas,
+          updateNumberOfPeople: this.updateNumberOfPeople,
+          updateSlicesPerPerson: this.updateSlicesPerPerson,
+          reset: this.reset,
+        })}
+      </div>
     );
   }
 }
 
-class Application extends Component {
+export default class Application extends Component {
   render() {
-    const {
-      numberOfPeople,
-      slicesPerPerson,
-      numberOfPizzas,
-      updateNumberOfPeople,
-      updateSlicesPerPerson,
-    } = this.props;
     return (
-      <div className="Application">
-        <Title />
-        <Input
-          label="Number of Guests"
-          type="number"
-          min={0}
-          value={numberOfPeople}
-          onChange={updateNumberOfPeople}
-        />
-        <Input
-          label="Slices Per Person"
-          type="number"
-          min={0}
-          value={slicesPerPerson}
-          onChange={updateSlicesPerPerson}
-        />
-        <Result amount={numberOfPizzas} />
-        <button className="full-width" onClick={this.reset}>
-          Reset
-        </button>
-      </div>
+      <PizzaCalculator
+        render={({
+          numberOfPeople,
+          slicesPerPerson,
+          numberOfPizzas,
+          updateNumberOfPeople,
+          updateSlicesPerPerson,
+          reset,
+        }) => (
+          <div className="Application">
+            <Title />
+            <Input
+              label="Number of Guests"
+              type="number"
+              min={0}
+              value={numberOfPeople}
+              onChange={updateNumberOfPeople}
+            />
+            <Input
+              label="Slices Per Person"
+              type="number"
+              min={0}
+              value={slicesPerPerson}
+              onChange={updateSlicesPerPerson}
+            />
+            <Result amount={numberOfPizzas} />
+            <button className="full-width" onClick={reset}>
+              Reset
+            </button>
+          </div>
+        )}
+      />
     );
   }
 }
