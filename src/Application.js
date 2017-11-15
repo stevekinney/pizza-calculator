@@ -6,30 +6,58 @@ import Result from './Result';
 
 import calculatePizzasNeeded from './lib/calculate-pizzas-needed';
 
-const initialState = {
-  numberOfPeople: 10,
-  slicesPerPerson: 2,
-};
+import pizzaCalculator from './PizzaCalculatorStore';
+import * as actions from './actions';
 
-export default class Application extends Component {
-  state = { ...initialState };
+export default class ApplicationContainer extends Component {
+  state = pizzaCalculator.getState();
 
-  updateNumberOfPeople = event => {
-    const numberOfPeople = parseInt(event.target.value, 10);
-    this.setState({ numberOfPeople });
-  };
+  updateCalculations = () => {
+    this.setState(pizzaCalculator.getState());
+  }
 
-  updateSlicesPerPerson = event => {
-    const slicesPerPerson = parseInt(event.target.value, 10);
-    this.setState({ slicesPerPerson });
-  };
+  componentDidMount() {
+    pizzaCalculator.on('change', this.updateCalculations);
+  }
 
-  reset = event => {
-    this.setState({ ...initialState });
-  };
+  componentWillUnmount() {
+    pizzaCalculator.off('change', this.updateCalculations);
+  }
 
   render() {
-    const { numberOfPeople, slicesPerPerson } = this.state;
+    return (
+      <PizzaCalculator
+        {...this.state}
+        updateNumberOfPeople={actions.updateNumberOfPeople}
+        updateSlicesPerPerson={actions.updateSlicesPerPerson}
+        reset={actions.reset}
+      />
+    );
+  }
+}
+
+class PizzaCalculator extends Component {
+  updateNumberOfPeople = (event) => {
+    const value = parseInt(event.target.value, 10);
+    this.props.updateNumberOfPeople(value);
+  }
+
+  updateSlicesPerPerson = (event) => {
+    const value = parseInt(event.target.value, 10);
+    this.props.updateSlicesPerPerson(value);
+  }
+
+  reset = () => {
+    this.props.reset();
+  }
+
+  render() {
+    const {
+      numberOfPeople,
+      slicesPerPerson,
+      reset,
+    } = this.props;
+
     const numberOfPizzas = calculatePizzasNeeded(
       numberOfPeople,
       slicesPerPerson,
@@ -53,7 +81,7 @@ export default class Application extends Component {
           onChange={this.updateSlicesPerPerson}
         />
         <Result amount={numberOfPizzas} />
-        <button className="full-width" onClick={this.reset}>
+        <button className="full-width" onClick={reset}>
           Reset
         </button>
       </div>
