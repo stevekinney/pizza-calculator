@@ -11,7 +11,7 @@ import calculatePizzasNeeded from './lib/calculate-pizzas-needed';
 
 
 class PizzaCalculator extends Component {
-  render(){
+  render() {
     return (
       <div className="Application">
       <Title />
@@ -19,7 +19,7 @@ class PizzaCalculator extends Component {
         label="Number of Guests"
         type="number"
         min={0}
-        value={ this.props.numberOfPeople }
+        value={this.props.numberOfPeople}
         onChange={this.props.updateNumberOfPeople}
       />
       <Input
@@ -39,12 +39,11 @@ class PizzaCalculator extends Component {
 }
 
 export default class Application extends Component {
-
   state = PizzaCalculatorStore.getState();
 
   updateNumberOfPeople = event => {
     const numberOfPeople = parseInt(event.target.value, 10);
-    actions.updateNumberOfpeople(numberOfPeople);
+    actions.updateNumberOfPeople(numberOfPeople);
   };
 
   updateSlicesPerPerson = event => {
@@ -78,8 +77,7 @@ export default class Application extends Component {
 
     return (
       <PizzaCalculator 
-        numberOfPeople = { numberOfPeople }
-        slicesPerPerson={slicesPerPerson}
+        {...this.state}
         numberOfPizzas={numberOfPizzas}
         updateNumberOfPeople={this.updateNumberOfPeople}
         updateSlicesPerPerson={this.updateSlicesPerPerson}
