@@ -9,13 +9,9 @@ import * as actions from './actions';
 
 import calculatePizzasNeeded from './lib/calculate-pizzas-needed';
 
-const initialState = {
-  numberOfPeople: 10,
-  slicesPerPerson: 2,
-};
 
 class PizzaCalculator extends Component {
-  render () {
+  render() {
     return (
       <div className="Application">
       <Title />
@@ -23,18 +19,18 @@ class PizzaCalculator extends Component {
         label="Number of Guests"
         type="number"
         min={0}
-        value={numberOfPeople}
-        onChange={updateNumberOfPeople}
+        value={this.props.numberOfPeople}
+        onChange={this.props.updateNumberOfPeople}
       />
       <Input
         label="Slices Per Person"
         type="number"
         min={0}
-        value={slicesPerPerson}
-        onChange={updateSlicesPerPerson}
+        value={this.props.slicesPerPerson}
+        onChange={this.props.updateSlicesPerPerson}
       />
-      <Result amount={numberOfPizzas} />
-      <button className="full-width" onClick={reset}>
+      <Result amount={this.props.numberOfPizzas} />
+      <button className="full-width" onClick={this.props.reset}>
         Reset
       </button>
     </div>
@@ -43,7 +39,7 @@ class PizzaCalculator extends Component {
 }
 
 export default class Application extends Component {
-  state = PizzaCalculator.getState();
+  state = PizzaCalculatorStore.getState();
 
   updateNumberOfPeople = event => {
     const numberOfPeople = parseInt(event.target.value, 10);
@@ -55,17 +51,22 @@ export default class Application extends Component {
     actions.updateSlicesPerPerson(slicesPerPerson);
   };
 
-  updateState() {
-    this.setState(PizzaCalculatorStore.getState());
-  }
 
-  componentDidMount() {
+
+  componentDidMount = () => {
     PizzaCalculatorStore.on('change', this.updateState);
   }
 
-  componentWillUnmount() {
+  componentWillUnmount = () => {
     PizzaCalculatorStore.off('change', this.updateState);
   }
+
+
+  updateState = () => {
+    this.setState( PizzaCalculatorStore.getState() );
+  }
+
+
 
   render() {
     const { numberOfPeople, slicesPerPerson } = this.state;
@@ -75,7 +76,7 @@ export default class Application extends Component {
     );
 
     return (
-      <PizzaCalculator
+      <PizzaCalculator 
         {...this.state}
         numberOfPizzas={numberOfPizzas}
         updateNumberOfPeople={this.updateNumberOfPeople}
